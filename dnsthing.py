@@ -3,6 +3,7 @@
 import argparse
 import docker
 import logging
+import re
 import subprocess
 
 
@@ -122,6 +123,8 @@ class hostRegistry (object):
         with open(self.hostsfile, 'w') as fd:
             for name, data in self.byname.items():
                 for nwname, address in data['networks'].items():
+                    name = re.sub("^docker_", "", name)
+                    name = re.sub("_1$", "", name)
                     fd.write('%s %s.%s.%s\n' % (
                         address, name, nwname, self.domain))
 
